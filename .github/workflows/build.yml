@@ -6,7 +6,7 @@ on:
     paths:
       - '**.sh'  
   schedule:
-    - cron: "1 * * * *"  
+    - cron: "5 * * * *" 
    
 jobs:
   build:
