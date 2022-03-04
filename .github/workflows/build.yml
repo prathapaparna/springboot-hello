@@ -1,13 +1,12 @@
 on:
   schedule:
     - cron: '1 * * * *'  
-    
+
 name: Main Workflow
 jobs:
-  test_schedule:
+  sonarqube:
     runs-on: ubuntu-latest
     steps:
-      - name: Not on Monday or Wednesday
-        if: github.event.schedule == ''1 * * * *''
-        run: echo "This step will be skipped on Monday and Wednesday"
-      
+    - uses: actions/checkout@v2
+    - name: Every time
+      run: echo "This step will always run"
