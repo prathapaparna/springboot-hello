@@ -1,14 +1,12 @@
-name: Scheduled Job
-
 on:
-  schedule:
-    - cron: "1 * * * *"
-    
+  push:
+    branches:
+      - aparna
+  pull_request:
+      types: [opened, synchronize, reopened]
 
 jobs:
-  scheduled-job:
+  specific_review_requested:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - run: |
-       echo "No changes to commit"
+      - run: echo 'A review from octo-team was requested'
