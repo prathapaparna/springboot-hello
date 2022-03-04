@@ -1,18 +1,14 @@
-name: Build
+name: Scheduled Job
+
 on:
-  push:
-    branches:
-      - aparna
-    paths:
-      - '**.sh'  
   schedule:
-    - cron: "5 * * * *" 
-   
+    - cron: "1 * * * *"
+    
+
 jobs:
-  build:
-    name: Build
+  scheduled-job:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: |
-         echo "No changes to commit"
+    - uses: actions/checkout@v2
+    - run: |
+       echo "No changes to commit"
