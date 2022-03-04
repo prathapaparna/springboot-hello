@@ -2,13 +2,16 @@ name: Scheduled Job
 
 on:
   schedule:
-    - cron: "1 * * * *"
+    - cron: '1 * * * *'
+   
+    
     
 
 jobs:
-  scheduled-job:
+  test_schedule:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - run: |
-       echo "No changes to commit"
+      - name: Not on Monday or Wednesday
+        if: github.event.schedule == ''1 * * * *''
+        run: echo "This step will be skipped on Monday and Wednesday"
+      
