@@ -1,8 +1,8 @@
-
 on:
   schedule:
-    - cron: '1 * * * *'    
-
+    - cron: '1 * * * *'  
+    
+name: Main Workflow
 jobs:
   test_schedule:
     runs-on: ubuntu-latest
