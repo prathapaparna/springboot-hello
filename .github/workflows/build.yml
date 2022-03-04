@@ -1,12 +1,12 @@
 on:
-  schedule:
-    - cron: '1 * * * *'  
+  push:
+    branches:
+      - aparna
+  pull_request:
+      types: [opened, synchronize, reopened]
 
-name: Main Workflow
 jobs:
-  sonarqube:
+  specific_review_requested:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Every time
-      run: echo "This step will always run"
+      - run: echo 'A review from octo-team was requested'
