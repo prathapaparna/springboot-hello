@@ -1,12 +1,11 @@
-on:
-  push:
-    branches:
-      - aparna
-  pull_request:
-      types: [opened, synchronize, reopened]
+name: build Workflow
+on: workflow_dispatch
 
 jobs:
-  specific_review_requested:
+  maven-job:
     runs-on: ubuntu-latest
     steps:
-      - run: echo 'A review from octo-team was requested'
+      - name: create jar file
+        run: |
+             echo "running mvn clean install"
+             mvn clean install
