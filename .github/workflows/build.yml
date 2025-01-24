@@ -1,5 +1,5 @@
 name: build Workflow
-on: workflow_dispatch
+on: push
 
 jobs:
   maven-job:
@@ -8,5 +8,6 @@ jobs:
       - name: create jar file
         run: |
              pwd
+             ls
              echo "running mvn clean install"
              
