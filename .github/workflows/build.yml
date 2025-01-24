@@ -7,5 +7,6 @@ jobs:
     steps:
       - name: create jar file
         run: |
+             pwd
              echo "running mvn clean install"
-             mvn clean install
+             
