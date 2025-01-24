@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-     - name: Build and push
+      - name: Build and push
         uses: docker/build-push-action@v2
         with:
           file: ./Dockerfile # even tried with just "Dockerfile" without double quotation
