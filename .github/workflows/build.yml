@@ -8,17 +8,8 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Show Present Working Directory
-        run: pwd
-
-      - name: List Files in Repo
-        run: ls -la
-
       - name: Build with Maven
         run: mvn clean install
-
-      - name: List Files After Build
-        run: ls -la target/
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
@@ -29,8 +20,10 @@ jobs:
   docker-job:
     needs: maven-job
     runs-on: ubuntu-latest
+    outputs:
+      container_status: ${{ steps.check_status.outputs.status }}  # Setting job output
     steps:
-      - name: Checkout Code (To get Dockerfile)
+      - name: Checkout Code
         uses: actions/checkout@v3
 
       - name: Get Build Artifacts
@@ -39,14 +32,24 @@ jobs:
           name: target-files
           path: target
 
-      - name: Show Present Working Directory
-        run: pwd
-
-      - name: List Files After Downloading Artifacts
-        run: ls -la
-
       - name: Build Docker Image
         run: docker build -t my-java-app .
 
       - name: Run Docker Container
-        run: docker run -d --name my-running-app my-java-app
+        run: docker run -d -p 8080:8080 --name my-running-app my-java-app
+
+      - name: Check if the Container is Running
+        id: check_status
+        run: |
+          if docker ps | grep my-running-app; then
+            echo "status=running" >> "$GITHUB_ENV"
+          else
+            echo "status=failed" >> "$GITHUB_ENV"
+          fi
+
+  verify-container:
+    needs: docker-job  # Runs after docker-job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify Job Output
+        run: echo "The container status is ${{ needs.docker-job.outputs.container_status }}"
