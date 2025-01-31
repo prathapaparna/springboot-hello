@@ -22,8 +22,8 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: target-files
-          path: target
+          name: app-jar
+          path: target/gs-spring-boot-0.1.0.jar
 
   docker-job:
     needs: maven-job
@@ -37,8 +37,8 @@ jobs:
       - name: Get Build Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: target-files
-          path: target
+          name: app-jar
+          path: .
           
       - name: Build Docker Image
         run: docker build -t my-java-app .
