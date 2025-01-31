@@ -42,9 +42,9 @@ jobs:
         id: check_status
         run: |
           if docker ps -a | grep my-running-app; then
-            echo "status=running" >> "$GITHUB_ENV"
+            echo "status=running" >> "$GITHUB_OUTPUT"
           else
-            echo "status=failed" >> "$GITHUB_ENV"
+            echo "status=failed" >> "$GITHUB_OUTPUT"
           fi
 
   verify-container:
