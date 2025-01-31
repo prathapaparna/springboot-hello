@@ -8,28 +8,20 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Cache Maven Dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            maven-${{ runner.os }}-
-
       - name: Build with Maven
         run: mvn clean install
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: app-jar
-          path: target/gs-spring-boot-0.1.0.jar
+          name: target-files
+          path: target
 
   docker-job:
     needs: maven-job
     runs-on: ubuntu-latest
     outputs:
-      container_status: ${{ steps.check_status.outputs.status }}
+      container_status: ${{ steps.check_status.outputs.status }}  # Setting job output
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -37,9 +29,9 @@ jobs:
       - name: Get Build Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: app-jar
-          path: .
-          
+          name: target-files
+          path: target
+
       - name: Build Docker Image
         run: docker build -t my-java-app .
 
@@ -50,13 +42,13 @@ jobs:
         id: check_status
         run: |
           if docker ps | grep my-running-app; then
-            echo "status=running" >> "$GITHUB_OUTPUT"
+            echo "status=running" >> "$GITHUB_ENV"
           else
-            echo "status=failed" >> "$GITHUB_OUTPUT"
+            echo "status=failed" >> "$GITHUB_ENV"
           fi
 
   verify-container:
-    needs: docker-job
+    needs: docker-job  # Runs after docker-job
     runs-on: ubuntu-latest
     steps:
       - name: Verify Job Output
