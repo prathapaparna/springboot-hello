@@ -41,7 +41,7 @@ jobs:
       - name: Check if the Container is Running
         id: check_status
         run: |
-          if docker ps | grep my-running-app; then
+          if docker ps -a | grep my-running-app; then
             echo "status=running" >> "$GITHUB_ENV"
           else
             echo "status=failed" >> "$GITHUB_ENV"
@@ -52,4 +52,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Verify Job Output
-        run: echo "The container status is ${{ needs.docker-job.outputs.container_status }}"
+        run: echo " ${{ needs.docker-job.outputs.container_status }}"
