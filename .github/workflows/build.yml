@@ -39,21 +39,9 @@ jobs:
         with:
           name: target-files
           path: target
-
-      - name: Cache Docker Build Layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: docker-${{ runner.os }}-${{ github.sha }}
-          restore-keys: |
-            docker-${{ runner.os }}-
-
+          
       - name: Build Docker Image
-        run: |
-          docker build \
-            --cache-from=type=local,src=/tmp/.buildx-cache \
-            --cache-to=type=local,dest=/tmp/.buildx-cache \
-            -t my-java-app .
+        run: docker build -t my-java-app .
 
       - name: Run Docker Container
         run: docker run -d -p 8080:8080 --name my-running-app my-java-app
