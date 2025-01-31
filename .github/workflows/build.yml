@@ -1,34 +1,52 @@
-name: build Workflow
+name: Build and Deploy Workflow
 on: push
 
 jobs:
   maven-job:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
-      - name: list of files
-        run: ls
-      - name: Build and push
+
+      - name: Show Present Working Directory
+        run: pwd
+
+      - name: List Files in Repo
+        run: ls -la
+
+      - name: Build with Maven
         run: mvn clean install
-      - name: Upload artifacts
+
+      - name: List Files After Build
+        run: ls -la target/
+
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: target-files
-          path: target   
+          path: target
+
   docker-job:
     needs: maven-job
     runs-on: ubuntu-latest
     steps:
-      - name: Get build artifacts
+      - name: Checkout Code (To get Dockerfile)
+        uses: actions/checkout@v3
+
+      - name: Get Build Artifacts
         uses: actions/download-artifact@v4
         with:
           name: target-files
-      - name: Output contents
-        run: ls
-      - name: Deploy
-        run: echo "Deploying..."
-      
-  
-      
-             
+          path: target
+
+      - name: Show Present Working Directory
+        run: pwd
+
+      - name: List Files After Downloading Artifacts
+        run: ls -la
+
+      - name: Build Docker Image
+        run: docker build -t my-java-app .
+
+      - name: Run Docker Container
+        run: docker run -d --name my-running-app my-java-app
