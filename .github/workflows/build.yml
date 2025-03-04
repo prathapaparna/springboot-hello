@@ -51,10 +51,13 @@ jobs:
           else
             echo "status=failed" >> "$GITHUB_OUTPUT"
           fi
+      - name: Get Runner IP
+        run: hostname -I    
 
   verify-container:
     needs: docker-image  # Runs after docker-image
     runs-on: ubuntu-latest
     steps:
       - name: Verify Job Output
-        run: echo "The container status is ${{ needs.docker-job.outputs.container_status }}"
+        run: echo "The container status is ${{ needs.docker-image.outputs.container_status }}"
+       
