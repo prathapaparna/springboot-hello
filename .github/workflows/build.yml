@@ -32,7 +32,9 @@ jobs:
           name: target-files
           path: target
       - name: List Downloaded Files
-        run: ls -R target   
+        run: |
+             pwd
+             ls -R target   
 
       - name: Build Docker Image
         run: docker build -t my-java-app .
