@@ -2,7 +2,7 @@ name: Build and Deploy Workflow
 on: push
 
 jobs:
-  maven-job:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -17,8 +17,8 @@ jobs:
           name: target-files
           path: target
 
-  docker-job:
-    needs: maven-job
+  docker-image:
+    needs: build
     runs-on: ubuntu-latest
     outputs:
       container_status: ${{ steps.check_status.outputs.status }}  # Setting job output
@@ -48,7 +48,7 @@ jobs:
           fi
 
   verify-container:
-    needs: docker-job  # Runs after docker-job
+    needs: docker-image  # Runs after docker-image
     runs-on: ubuntu-latest
     steps:
       - name: Verify Job Output
