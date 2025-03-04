@@ -34,6 +34,7 @@ jobs:
       - name: List Downloaded Files
         run: |
              pwd
+             ls -lr
              ls -R target   
 
       - name: Build Docker Image
