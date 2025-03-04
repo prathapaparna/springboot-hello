@@ -51,8 +51,8 @@ jobs:
           else
             echo "status=failed" >> "$GITHUB_OUTPUT"
           fi
-      - name: Get Runner IP
-        run: hostname -I    
+      - name: Check Application Health
+        run: curl -v http://localhost:8080 
 
   verify-container:
     needs: docker-image  # Runs after docker-image
